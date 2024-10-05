@@ -20,12 +20,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-*u#nygx-pw3^+djx=#8bu+2nxsh=xhjtxwkxk%jd_y*g)v#m=q'
+SECRET_KEY = config("SECRET_KEY", default='django-insecure-*u#nygx-pw3^+djx=#8bu+2nxsh=xhjtxwkxk%jd_y*g)v#m=q')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config("DEBUG",cast=bool, default=True)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=lambda v: [item.strip() for item in v.split(',')], default="*")
 
 
 # Application definition
@@ -54,7 +54,7 @@ ROOT_URLCONF = 'core.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -78,7 +78,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': config("PGDB_NAME", default='postgres'),                      
         'USER': config("PGDB_USER", default='postgres'),
-        'PASSWORD': config("PGDB_PASSWORD", default='postgres'),
+        'PASSWORD': config("PGDB_PASSWORD", default='123456'),
         'HOST': config("PGDB_HOST", default='db'),
         'PORT': config("PGDB_PORT", cast=int, default=5432),
     }
