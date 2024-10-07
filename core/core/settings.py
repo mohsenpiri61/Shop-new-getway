@@ -37,6 +37,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    'website',
+    'dashboard',
+    'accounts',
+    'shop',
+    'cart',
+    'order',
+    'payment',
+    'review',
+    
 ]
 
 MIDDLEWARE = [
@@ -78,7 +88,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': config("PGDB_NAME", default='postgres'),                      
         'USER': config("PGDB_USER", default='postgres'),
-        'PASSWORD': config("PGDB_PASSWORD", default='123456'),
+        'PASSWORD': config("PGDB_PASSWORD", default='postgres'),
         'HOST': config("PGDB_HOST", default='db'),
         'PORT': config("PGDB_PORT", cast=int, default=5432),
     }
