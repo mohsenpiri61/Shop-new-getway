@@ -14,7 +14,7 @@ class CustomUserAdmin(UserAdmin):
     model = User
     list_display = ("id", "email", "is_superuser", "is_active", "is_verified")
     list_filter = ("email", "is_superuser", "is_active", "is_verified")
-    searching_fields = ("email",)
+    search_fields = ("email",)
     ordering = ("email",)
     fieldsets = (
         (
@@ -69,7 +69,7 @@ class CustomUserAdmin(UserAdmin):
 
 class CustomProfileAdmin(admin.ModelAdmin):
     list_display = ("id", "user", "first_name", "last_name", "phone_number")
-    searching_fields = ("user", "first_name", "last_name", "phone_number")
+    search_fields = ("user", "first_name", "last_name", "phone_number")
 
 
 admin.site.register(Profile, CustomProfileAdmin)

@@ -100,12 +100,13 @@
                             </button>
 
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <a class="dropdown-item" href="{% url 'dashboard:home' %}">پروفایل</a>
+                      
                                 <a class="dropdown-item" href="{% url 'accounts:logout' %}">خروج</a>
                             </div>
 
+
                             {% else %}
-              
+                               <a class="btn btn-primary btn-transition" href="{% url 'accounts:login' %}">ورود</a>
                             {% endif %}
                         </li>
                     </ul>
