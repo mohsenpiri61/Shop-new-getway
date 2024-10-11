@@ -29,26 +29,21 @@
     
     
               <!-- End Form -->
-    <!-- Form: Password1 -->
-    <div class="mb-3">
-        <label class="form-label" for="password1">رمز عبور</label>
-        <div class="input-group input-group-merge" data-hs-validation-validate-class>
-            <input type="password" class="js-toggle-password form-control form-control-lg text-center" id="password1" name="password1" placeholder="" required>
-        </div>
-    </div>
+                <!-- Form: Password1 -->
+                <div class="mb-3">
+                    <label class="form-label" for="password1">رمز عبور</label>
+                    <div class="input-group input-group-merge" data-hs-validation-validate-class>
+                        <input type="password" class="js-toggle-password form-control form-control-lg text-center" id="password1" name="password1" placeholder="" required>
+                    </div>
+                </div>
 
-    <!-- Form: Password2 -->
-    <div class="mb-3">
-        <label class="form-label" for="password2">تأیید رمز عبور</label>
-        <div class="input-group input-group-merge" data-hs-validation-validate-class>
-            <input type="password" class="js-toggle-password form-control form-control-lg text-center" id="password2" name="password2" placeholder="" required>
-        </div>
-    </div>
-
-
-
-
-
+                <!-- Form: Password2 -->
+                <div class="mb-3">
+                    <label class="form-label" for="password2">تأیید رمز عبور</label>
+                    <div class="input-group input-group-merge" data-hs-validation-validate-class>
+                        <input type="password" class="js-toggle-password form-control form-control-lg text-center" id="password2" name="password2" placeholder="" required>
+                    </div>
+                </div>
 
 
           <!-- Check -->
@@ -108,53 +103,14 @@
   <!-- JS Front -->
   <script src="{% static 'js/theme.min.js' %}"></script>
 
-  <!-- JS Plugins Init. -->
-  <script>
-    (function () {
-      // INITIALIZATION OF HEADER
-      // =======================================================
-      new HSHeader('#header').init()
 
-
-      // INITIALIZATION OF MEGA MENU
-      // =======================================================
-      new HSMegaMenu('.js-mega-menu', {
-        desktop: {
-          position: 'left'
-        }
-      })
-
-
-      // INITIALIZATION OF SHOW ANIMATIONS
-      // =======================================================
-      new HSShowAnimation('.js-animation-link')
-
-
-      // INITIALIZATION OF BOOTSTRAP VALIDATION
-      // =======================================================
-      HSBsValidation.init('.js-validate', {
-        onSubmit: data => {
-          data.event.preventDefault()
-          alert('Submited')
-        }
-      })
-
-
-      // INITIALIZATION OF BOOTSTRAP DROPDOWN
-      // =======================================================
-      HSBsDropdown.init()
-
-
-      // INITIALIZATION OF GO TO
-      // =======================================================
-      new HSGoTo('.js-go-to')
 
       {% endblock content %}
 
 
       {% block extra_js %}
  
-  </script>
+
   {% endblock extra_js %}
 </body>
 

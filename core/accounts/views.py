@@ -13,8 +13,8 @@ class LoginView(auth_views.LoginView):
     template_name = "accounts/login.html"
     form_class = AuthenticationForm
     redirect_authenticated_user = True
-    # success_url = '/'
-    # success_message = "You have registered successfully!"
+
+
 
 class LogoutView(auth_views.LogoutView):
     pass
@@ -63,9 +63,9 @@ class SignUpView(CreateView):
     form_class = SignUpForm
     template_name = 'accounts/page-signup-simple.html'
     success_url = reverse_lazy('accounts:login')
-    
+
 
     def form_valid(self, form):
-        print("Form is valid.")  # لاگ برای بررسی اعتبارسنجی موفق
+        messages.success(self.request, "،The new user was created successfully")
         return super().form_valid(form)
 
