@@ -162,6 +162,5 @@ AUTH_USER_MODEL = 'accounts.User'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL= '/'
 
-from datetime import timedelta
 
-PASSWORD_RESET_TIMEOUT = 144000  # 40 hours in seconds
+PASSWORD_RESET_TIMEOUT = 172800  # 40 hours in seconds
