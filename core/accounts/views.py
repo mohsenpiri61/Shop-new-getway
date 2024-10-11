@@ -29,7 +29,7 @@ class CustomPasswordResetView(auth_views.PasswordResetView):
         email = form.cleaned_data.get('email')       
         if not User.objects.filter(email=email).exists():
             messages.error(self.request, 'ایمیل وارد شده در سیستم موجود نیست.')
-            return render(self.request, self.template_name, {'form': form})د
+            return render(self.request, self.template_name, {'form': form})
         return super().form_valid(form)
 
 class CustomPasswordResetDoneView(auth_views.PasswordResetDoneView):
