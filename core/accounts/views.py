@@ -41,7 +41,8 @@ class CustomPasswordResetView(auth_views.PasswordResetView):
             from_email=settings.DEFAULT_FROM_EMAIL,
             recipient_list=[email]
         )
-
+        return response
+    
 
 class CustomPasswordResetDoneView(auth_views.PasswordResetDoneView):
     template_name = 'accounts/password_reset_done.html'
