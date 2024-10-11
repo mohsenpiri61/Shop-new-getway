@@ -164,3 +164,5 @@ LOGOUT_REDIRECT_URL= '/'
 
 
 PASSWORD_RESET_TIMEOUT = 172800  # 40 hours in seconds
+
+DEFAULT_FROM_EMAIL = 'mopiry@gmail.com'

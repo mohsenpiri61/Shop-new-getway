@@ -22,5 +22,6 @@ urlpatterns = [
     # پیام موفقیت پس از تغییر رمز عبور
     path('reset_password_complete/', views.CustomPasswordResetCompleteView.as_view(), name='password_reset_complete'),
     
+    path('signup/', views.SignUpView.as_view(), name='signup')
     
 ]

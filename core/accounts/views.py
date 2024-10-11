@@ -1,10 +1,13 @@
 from django.contrib.auth import views as auth_views
-from accounts.forms import AuthenticationForm
+from accounts.forms import AuthenticationForm, SignUpForm
 from django.urls import reverse_lazy
 from .models import User
 from django.contrib import messages
 from django.shortcuts import render
+from django.views.generic import CreateView
 # from django.contrib.messages.views import SuccessMessageMixin
+
+
 
 class LoginView(auth_views.LoginView):
     template_name = "accounts/login.html"
@@ -29,8 +32,16 @@ class CustomPasswordResetView(auth_views.PasswordResetView):
         email = form.cleaned_data.get('email')       
         if not User.objects.filter(email=email).exists():
             messages.error(self.request, 'ایمیل وارد شده در سیستم موجود نیست.')
+            
             return render(self.request, self.template_name, {'form': form})
         return super().form_valid(form)
+        send_reset_password_email.delay(
+            subject='بازیابی رمز عبور',
+            message='لینک بازیابی رمز عبور شما ...',
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[email]
+        )
+
 
 class CustomPasswordResetDoneView(auth_views.PasswordResetDoneView):
     template_name = 'accounts/password_reset_done.html'
@@ -43,3 +54,18 @@ class CustomPasswordResetConfirmView(auth_views.PasswordResetConfirmView):
 
 class CustomPasswordResetCompleteView(auth_views.PasswordResetCompleteView):
     template_name = 'accounts/password_reset_complete.html'
+
+
+
+
+class SignUpView(CreateView):
+    model = User
+    form_class = SignUpForm
+    template_name = 'accounts/page-signup-simple.html'
+    success_url = reverse_lazy('accounts:login')
+    
+
+    def form_valid(self, form):
+        print("Form is valid.")  # لاگ برای بررسی اعتبارسنجی موفق
+        return super().form_valid(form)
+
