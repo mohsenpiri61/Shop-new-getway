@@ -168,4 +168,4 @@ PASSWORD_RESET_TIMEOUT = 172800  # 40 hours in seconds
 # DEFAULT_FROM_EMAIL = 'mopiry@gmail.com'
 
 # celery configs
-CELERY_BROKER_URL = "redis://redis:6379/1"
+CELERY_BROKER_URL = "redis://redis_shop:6379/1"
