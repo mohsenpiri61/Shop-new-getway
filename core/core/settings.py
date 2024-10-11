@@ -162,7 +162,10 @@ AUTH_USER_MODEL = 'accounts.User'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL= '/'
 
-
+# token timeout
 PASSWORD_RESET_TIMEOUT = 172800  # 40 hours in seconds
 
-DEFAULT_FROM_EMAIL = 'mopiry@gmail.com'
+# DEFAULT_FROM_EMAIL = 'mopiry@gmail.com'
+
+# celery configs
+CELERY_BROKER_URL = "redis://redis:6379/1"
