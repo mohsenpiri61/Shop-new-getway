@@ -43,20 +43,22 @@ services:
     # env_file:
     #   - ./envs/dev/django/.env
     # restart: always
-    depends_on:
-      - db
-      - redis
+    # depends_on:
+    #   - db
+    #   - redis
 
 
   worker:
-    build: .
+    build: 
+      context: .
+      dockerfile: ./dockerfiles/dev/django/Dockerfile
     command: celery -A core worker --loglevel=info
     volumes:
       - ./core:/app
-    depends_on:
-      - db
-      - redis
-      - backend  
+    # depends_on:
+    #   - db
+    #   - redis
+    #   - backend  
 
       
   smtp4dev:

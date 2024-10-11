@@ -5,6 +5,7 @@ from .models import User
 from django.contrib import messages
 from django.shortcuts import render
 from django.views.generic import CreateView
+from .tasks import send_reset_password_email
 # from django.contrib.messages.views import SuccessMessageMixin
 
 
@@ -32,16 +33,14 @@ class CustomPasswordResetView(auth_views.PasswordResetView):
         email = form.cleaned_data.get('email')       
         if not User.objects.filter(email=email).exists():
             messages.error(self.request, 'ایمیل وارد شده در سیستم موجود نیست.')
-            
             return render(self.request, self.template_name, {'form': form})
+        
+        recipient_list = [email]
+        subject = 'Reset your password'
+        message = 'Click the link to reset your password'
+        send_reset_password_email.delay(subject, message, recipient_list)
         return super().form_valid(form)
-        send_reset_password_email.delay(
-            subject='بازیابی رمز عبور',
-            message='لینک بازیابی رمز عبور شما ...',
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[email]
-        )
-        return response
+    
     
 
 class CustomPasswordResetDoneView(auth_views.PasswordResetDoneView):
