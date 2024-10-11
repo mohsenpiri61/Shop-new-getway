@@ -22,19 +22,17 @@ class SignUpForm(UserCreationForm):
         fields = ('email', 'password1', 'password2')  
 
     
-    def save(self, commit=True):
-        user = super(SignUpForm, self).save(commit=False)
-        user.email = self.cleaned_data['email']
-        if commit:
-            print("User will be saved.") 
-            user.save()
-        return user        
-    
-    
-    # for preventing of duplicate email
+    # For preventing duplicate emails
     def clean_email(self):
         email = self.cleaned_data.get('email')
         if User.objects.filter(email=email).exists():
             raise ValidationError("ایمیل قبلاً ثبت شده است.")
         return email
-    
+
+    def save(self, commit=True):
+        user = super(SignUpForm, self).save(commit=False)
+        user.email = self.cleaned_data['email']
+        if commit:
+            print("User will be saved.")
+            user.save()
+        return user
