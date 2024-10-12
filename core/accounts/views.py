@@ -27,19 +27,20 @@ class LogoutView(auth_views.LogoutView):
 
 class CustomPasswordResetView(auth_views.PasswordResetView):
     template_name = 'accounts/password_reset_form.html'
-    email_template_name = ''
+    email_template_name = 'accounts/password_reset_email_by_token.html'
     success_url = reverse_lazy('accounts:password_reset_done')
 
 
-    # overriding form_valid for invalid email addresses
+    # overriding form_valid for invalid email address and creating token and sending email
     def form_valid(self, form):
         email = form.cleaned_data.get('email')       
         
         # Checking for existance of email in the database 
-        user_email = User.objects.filter(email=email).first()
+        user_email = User.objects.filter(email=email).first()      
         if not user_email:
             messages.error(self.request, '.ایمیل وارد شده در سیستم موجود نیست')
             return render(self.request, self.template_name, {'form': form})
+        
         
         else:
             # Generate password recovery token
@@ -47,16 +48,18 @@ class CustomPasswordResetView(auth_views.PasswordResetView):
             token = default_token_generator.make_token(user_email)
             
             # Create a reset link (both reset_link is usable)
-            reset_link = self.request.build_absolute_uri(reverse('accounts:password_reset_confirm', kwargs={'uidb64': uid, 'token': token}))
-            # reset_link = f"{self.request.scheme}://{self.request.get_host()}/accounts/reset/{uid}/{token}/"
+            # reset_link = self.request.build_absolute_uri(reverse('accounts:password_reset_confirm', kwargs={'uidb64': uid, 'token': token}))
+            reset_link = f"{self.request.scheme}://{self.request.get_host()}/accounts/reset/{uid}/{token}/"
 
             from_email = 'webmasterl@localhost'
             recipient_list = [email]
             subject = 'Reset your password'
             message = f"Hi {user_email.email},\n\nTo reset your password, click the link below:\n{reset_link}\n\nIf you did not request a password reset, please ignore this email."
             send_reset_password_email.delay(subject, message, from_email, recipient_list)
-            
-        return super().form_valid(form)
+            messages.success(self.request, '.لینک بازنشانی رمز عبور به ایمیل شما ارسال شد')
+            return super().form_valid(form)
+    
+  
     
     
 
