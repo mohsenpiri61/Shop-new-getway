@@ -1,11 +1,14 @@
 from django.contrib.auth import views as auth_views
 from accounts.forms import AuthenticationForm, SignUpForm
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from .models import User
 from django.contrib import messages
 from django.shortcuts import render
 from django.views.generic import CreateView
 from .tasks import send_reset_password_email
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
 # from django.contrib.messages.views import SuccessMessageMixin
 
 
@@ -24,21 +27,35 @@ class LogoutView(auth_views.LogoutView):
 
 class CustomPasswordResetView(auth_views.PasswordResetView):
     template_name = 'accounts/password_reset_form.html'
-    email_template_name = 'accounts/password_reset_email.html'
+    email_template_name = ''
     success_url = reverse_lazy('accounts:password_reset_done')
 
 
     # overriding form_valid for invalid email addresses
     def form_valid(self, form):
         email = form.cleaned_data.get('email')       
-        if not User.objects.filter(email=email).exists():
-            messages.error(self.request, 'ایمیل وارد شده در سیستم موجود نیست.')
+        
+        # Checking for existance of email in the database 
+        user_email = User.objects.filter(email=email).first()
+        if not user_email:
+            messages.error(self.request, '.ایمیل وارد شده در سیستم موجود نیست')
             return render(self.request, self.template_name, {'form': form})
         
-        recipient_list = [email]
-        subject = 'Reset your password'
-        message = 'Click the link to reset your password'
-        send_reset_password_email.delay(subject, message, recipient_list)
+        else:
+            # Generate password recovery token
+            uid = urlsafe_base64_encode(force_bytes(user_email.pk))
+            token = default_token_generator.make_token(user_email)
+            
+            # Create a reset link (both reset_link is usable)
+            reset_link = self.request.build_absolute_uri(reverse('accounts:password_reset_confirm', kwargs={'uidb64': uid, 'token': token}))
+            # reset_link = f"{self.request.scheme}://{self.request.get_host()}/accounts/reset/{uid}/{token}/"
+
+            from_email = 'webmasterl@localhost'
+            recipient_list = [email]
+            subject = 'Reset your password'
+            message = f"Hi {user_email.email},\n\nTo reset your password, click the link below:\n{reset_link}\n\nIf you did not request a password reset, please ignore this email."
+            send_reset_password_email.delay(subject, message, from_email, recipient_list)
+            
         return super().form_valid(form)
     
     
