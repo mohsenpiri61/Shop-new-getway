@@ -4,3 +4,4 @@ python-decouple
 pillow
 celery
 redis
+faker==30.3.0
