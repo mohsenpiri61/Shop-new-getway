@@ -42,10 +42,10 @@ services:
       - DEBUG=True
     # env_file:
     #   - ./envs/dev/django/.env
-    # restart: always
-    # depends_on:
-    #   - db
-    #   - redis
+    restart: always
+    depends_on:
+      - db
+      - redis
 
 
   worker:
@@ -55,10 +55,10 @@ services:
     command: celery -A core worker --loglevel=info
     volumes:
       - ./core:/app
-    # depends_on:
-    #   - db
-    #   - redis
-    #   - backend  
+    depends_on:
+      - db
+      - redis
+      - backend  
 
       
   smtp4dev:
