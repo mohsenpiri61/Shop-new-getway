@@ -1,7 +1,75 @@
-{% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-        <li class="{{ message.tags }}">{{ message }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+    .message-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+        text-align: center;
+        padding: 10px;
+    }
+    
+    .alert {
+        display: inline-block;
+        padding: 15px;
+        margin: 10px;
+        border-radius: 5px;
+        color: white;
+        font-size: 16px;
+        
+    }
+    
+    .alert.success {
+        background-color: #4CAF50; /* سبز */
+    }
+    
+    .alert.error {
+        background-color: #f44336; /* قرمز */
+    }
+    
+    .alert.info {
+        background-color: #2196F3; /* آبی */
+    }
+    
+    .alert.warning {
+        background-color: #ff9800; /* نارنجی */
+    }
+</style>
+</head>
+<body>
+ 
+        {% if messages %}
+          <div class="message-container">
+            {% for message in messages %}
+              <div class="alert {{ message.tags }}">
+                {{ message }}
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        <script>
+            // این کد پیام‌ها را به آرامی بعد از 3 ثانیه محو می‌کند
+            setTimeout(function() {
+                var messages = document.querySelectorAll('.alert');
+                messages.forEach(function(message) {
+                    message.classList.add('hide');  // کلاس hide را اضافه می‌کند
+                });
+            }, 1000);  // 2000 میلی‌ثانیه = 2 ثانیه
+        
+            // حذف کامل پیام‌ها بعد از 1 ثانیه (پس از پایان انیمیشن محو شدن)
+            setTimeout(function() {
+                var messageContainer = document.querySelector('.message-container');
+                if (messageContainer) {
+                    messageContainer.remove();  // کل پیام‌ها را حذف می‌کند
+                }
+            }, 2000);  // 3000 میلی‌ثانیه = 3 ثانیه (1 ثانیه بعد از محو شدن)
+        </script>
+        
+</body>
+</html>
