@@ -13,7 +13,7 @@ class CustomUserAdmin(UserAdmin):
 
     model = User
     list_display = ("id", "email", "is_superuser", "is_active", "is_verified")
-    list_filter = ("email", "is_superuser", "is_active", "is_verified")
+    list_filter = ("created_date", "is_superuser", "is_active", "is_verified")
     search_fields = ("email",)
     ordering = ("email",)
     fieldsets = (
