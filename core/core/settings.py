@@ -91,7 +91,7 @@ DATABASES = {
         'NAME': config("PGDB_NAME", default='postgres'),                      
         'USER': config("PGDB_USER", default='postgres'),
         'PASSWORD': config("PGDB_PASSWORD", default='postgres'),
-        'HOST': config("PGDB_HOST", default='db'),
+        'HOST': config("PGDB_HOST", default='db'),   # db is the service's name that we have defined in docker-compose.yml
         'PORT': config("PGDB_PORT", cast=int, default=5432),
     }
 }
