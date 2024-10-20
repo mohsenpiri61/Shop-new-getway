@@ -21,7 +21,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     ports:
-      - 5432:5432
+      - '5432:5432'
  
     restart: always
 
@@ -37,7 +37,7 @@ services:
     # command: django-admin startproject core .
     command: python manage.py runserver 0.0.0.0:8000
     ports:
-      - 8000:8000
+      - '8000:8000'
     environment:
       - DEBUG=True
     # env_file:
