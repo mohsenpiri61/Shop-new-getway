@@ -1,7 +1,6 @@
 from django.db import models
 
 
-
 class ContactModel(models.Model):
     full_name = models.CharField(max_length=200)
     email = models.EmailField(default=None, null=True)
@@ -15,12 +14,8 @@ class ContactModel(models.Model):
     class Meta:
         ordering = ['-created_date']
 
-
-
     def __str__(self):
         return self.full_name
-
-
 
 
 class NewsLetter(models.Model):
@@ -30,6 +25,3 @@ class NewsLetter(models.Model):
 
     def __str__(self):
         return self.email
-
-
-
