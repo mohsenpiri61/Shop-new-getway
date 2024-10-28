@@ -206,19 +206,16 @@
                                     href="{% url 'shop:product-detail' slug=object.slug %}">{{object.title}}</a>
                             </h4>
                             {% if object.is_discounted %}
-                            <div class="card-pinned-top-start">
-                                <span class="badge bg-danger rounded-pill">{{object.discount_percent}}% </span>
-                              </div>
-                            <p class="card-text text-dark fs-4">
-                                <span class="formatted-price">{{object.get_price}}</span>
-                                <span
-                                    class="text-body me-1 fs-6 formatted-price text-decoration-line-through">{{object.price}}</span>
-                            </p>
-                            {% else %}
-                            <p class="card-text text-dark fs-4 formatted-price"> {{object.price}}</p>
+                                <div class="card-pinned-top-start">
+                                    <span class="badge bg-danger rounded-pill">{{object.discount_percent}}% </span>
+                                  </div>
+                                <p class="card-text text-dark fs-4">
+                                    <span class="formatted-price">{{object.get_price}}</span>
+                                    <span class="text-body me-1 fs-6 formatted-price text-decoration-line-through">{{object.price}}</span>
+                                </p>
+                                {% else %}
+                                <p class="card-text text-dark fs-4 formatted-price"> {{object.price}}</p>
                             {% endif %}
-
-            
                         </div>
 
                         <div class="card-footer pt-0">
@@ -266,17 +263,17 @@
                             </span>
                         </button>
                     </li>
-                   {% endif %}
+                    {% endif %}
                     {{page_obj.page_range}}
                     {% for i in page_obj.paginator.page_range %}
-                        {% if page_obj.number == i %}
-                        <li class="page-item active"><a class="page-link">{{ i }}</a></li>
-                        {% elif i > page_obj.number|add:'-3' and i < page_obj.number|add:'3' %} <li class="page-item">
-                            <button class="page-link" onclick="changePage(`{{i}}`)">{{ i }}</button></li>
+                    {% if page_obj.number == i %}
+                    <li class="page-item active"><a class="page-link">{{ i }}</a></li>
+                    {% elif i > page_obj.number|add:'-3' and i < page_obj.number|add:'3' %} <li class="page-item">
+                        <button class="page-link" onclick="changePage(`{{i}}`)">{{ i }}</button></li>
 
                         {% endif %}
 
-                    {% endfor %}
+                        {% endfor %}
 
 
                         {% if page_obj.has_next %}
