@@ -9,7 +9,7 @@ from .tasks import send_reset_password_email
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
-# from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.messages.views import SuccessMessageMixin
 
 
 
@@ -18,7 +18,18 @@ class LoginView(auth_views.LoginView):
     form_class = AuthenticationForm
     redirect_authenticated_user = True
 
-
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        user = self.request.user
+        if user.is_superuser:
+            success_message = "شما با دسترسی ادمین وارد شده‌اید."
+        elif user.is_staff:
+            success_message = "شما با موفقیت وارد شده‌اید."
+        else:
+            success_message = "شما با موفقیت وارد شده‌اید."
+        
+        messages.success(self.request, success_message)
+        return response
 
 class LogoutView(auth_views.LogoutView):
     pass
