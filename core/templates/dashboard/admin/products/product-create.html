@@ -133,9 +133,9 @@
 {% endblock %}
 
 {% block extra_js_no_compress %}
-<script src="{% static 'vendor/ckeditor/ckeditor.js' %}"></script>
+<script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
+<textarea name="content" id="editor"></textarea>
 <script>
-    // Replace 'editor' with the id of your textarea
-    CKEDITOR.replace('ckeditor');
+    CKEDITOR.replace('editor');
 </script>
 {% endblock %}
