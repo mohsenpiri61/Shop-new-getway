@@ -25,7 +25,7 @@ class ProductForm(forms.ModelForm):
         self.fields['category'].widget.attrs['class'] = 'form-control'
         self.fields['image'].widget.attrs['class'] = 'form-control'
         self.fields['brief_description'].widget.attrs['class'] = 'form-control'
-        self.fields['description'].widget.attrs['id'] = 'editor'
+        # self.fields['description'].widget.attrs['id'] = 'editor'
         self.fields['stock'].widget.attrs['class'] = 'form-control'
         self.fields['stock'].widget.attrs['type'] = 'number'
         self.fields['status'].widget.attrs['class'] = 'form-select'

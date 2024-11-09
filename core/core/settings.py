@@ -48,13 +48,13 @@ INSTALLED_APPS = [
     'payment',
     'review',
     'ckeditor',
-    'ckeditor_uploader',  # برای امکان آپلود تصویر
+   
 
     
 ]
 
 CKEDITOR_UPLOAD_PATH = "media/ck_media" 
-
+CKEDITOR_BASEPATH = "/static/vendor/ckeditor/"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

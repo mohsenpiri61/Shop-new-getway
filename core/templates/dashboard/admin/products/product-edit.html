@@ -51,6 +51,7 @@
             <!-- Body -->
             <form action="." method="post" enctype="multipart/form-data">
                 {% csrf_token %}
+                {{ form.media }}
                 <div class="card-body">
                     <div class="row d-flex ">
                         <div class="col-md-6 mb-3">
@@ -91,7 +92,7 @@
                         </div>
                         <div class="col-md-12 mb-3">
                             <label>توضیحات</label>
-                            {{form.description}}
+                            {{form.description|safe}}
                         </div>
 
                         <div class="col-md-12 mb-3">
@@ -186,9 +187,6 @@
 {% endblock %}
 
 {% block extra_js_no_compress %}
-<script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
-<textarea name="content" id="editor"></textarea>
-<script>
-    CKEDITOR.replace('editor');
-</script>
+<!-- <script>window.CKEDITOR_BASEPATH = '/my_static/ckeditor/ckeditor/';</script> -->
+
 {% endblock %}
