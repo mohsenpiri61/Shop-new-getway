@@ -1,5 +1,5 @@
 from django.urls import path, include
-from dashboard.customer import views
+from .. import views
 
 
 urlpatterns = [

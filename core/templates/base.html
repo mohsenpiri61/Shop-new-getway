@@ -87,13 +87,7 @@
 
                             <!-- End Search -->
 
-                            <!-- Shopping Cart -->
-                            <!-- <button type="button" class="btn btn-ghost-secondary btn-icon" type="button"
-                                data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbarShoppingCart"
-                                aria-controls="offcanvasNavbarShoppingCart">
-                                <i class="bi-basket"></i>
-                                <span class="cart-item-count ">3</span>
-                            </button> -->
+
                             <a href="{% url 'cart:cart-summary' %}" class="btn btn-ghost-secondary btn-icon">
                                 <i class="bi-basket"></i>
                                 <span class="cart-item-count" id="total-cart-item-count">{{cart.get_total_quantity}}</span>
@@ -636,7 +630,8 @@
                 }
             });
         }
-        
+
+    
     </script>
 
     {% block extra_js %} {% endblock extra_js %}

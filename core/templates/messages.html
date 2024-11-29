@@ -1,75 +1,50 @@
+{% if messages %}
+    {% for message in messages %}
+      <script>
+           setTimeout(function() {
+            Toastify({
+                text: `{{ message|safe }}`,
+                className: `{{ message.tags }}`,
+                style: {
+                    background: "blue",
+                },
+                duration: 6000  // مدت زمان ۵ ثانیه
+            }).showToast();
+        }, 100);  // شروع با تاخیر 100 میلی‌ثانیه
+      </script>
+    {% endfor %}
+  {% endif %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-    .message-container {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        z-index: 1000;
-        text-align: center;
-        padding: 10px;
-    }
-    
-    .alert {
-        display: inline-block;
-        padding: 15px;
-        margin: 10px;
-        border-radius: 5px;
-        color: white;
-        font-size: 16px;
-        
-    }
-    
-    .alert.success {
-        background-color: #4CAF50; /* سبز */
-    }
-    
-    .alert.error {
-        background-color: #f44336; /* قرمز */
-    }
-    
-    .alert.info {
-        background-color: #2196F3; /* آبی */
-    }
-    
-    .alert.warning {
-        background-color: #ff9800; /* نارنجی */
-    }
-</style>
-</head>
-<body>
- 
-        {% if messages %}
-          <div class="message-container">
-            {% for message in messages %}
-              <div class="alert {{ message.tags }}">
-                {{ message }}
-              </div>
+  {% if form.errors %}
+    <div class="alert alert-error">
+      <ul>
+        {% for field in form %}
+          {% if field.errors %}
+            {% for error in field.errors %}
+              
+              <script>
+                Toastify({
+                    text:`{{ error|escape }}`,
+                    className: `error`,
+                    style: {
+                      background: "red",
+                    }
+                  }).showToast();
+              </script>
             {% endfor %}
-          </div>
-        {% endif %}
-
+          {% endif %}
+        {% endfor %}
+      </ul>
+      {% if form.non_field_errors %}
         <script>
-            // این کد پیام‌ها را به آرامی بعد از 3 ثانیه محو می‌کند
-            setTimeout(function() {
-                var messages = document.querySelectorAll('.alert');
-                messages.forEach(function(message) {
-                    message.classList.add('hide');  // کلاس hide را اضافه می‌کند
-                });
-            }, 1000);  // 2000 میلی‌ثانیه = 2 ثانیه
-        
-            // حذف کامل پیام‌ها بعد از 1 ثانیه (پس از پایان انیمیشن محو شدن)
-            setTimeout(function() {
-                var messageContainer = document.querySelector('.message-container');
-                if (messageContainer) {
-                    messageContainer.remove();  // کل پیام‌ها را حذف می‌کند
+            Toastify({
+                text:`{{ form.non_field_errors.as_text }}`,
+                className: `error`,
+                style: {
+                  background: "red",
                 }
-            }, 2000);  // 3000 میلی‌ثانیه = 3 ثانیه (1 ثانیه بعد از محو شدن)
-        </script>
-        
-</body>
-</html>
+              }).showToast();
+          </script>
+      {% endif %}
+    </div>
+  {% endif %}

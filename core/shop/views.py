@@ -1,4 +1,5 @@
 from django.views.generic import (
+    TemplateView,
     ListView,
     DetailView,
     View
@@ -10,7 +11,6 @@ from django.http import JsonResponse
 from review.models import ReviewModel, ReviewStatusType
 
 
-# Create your views here.
 
 
 class ShopProductGridView(ListView):

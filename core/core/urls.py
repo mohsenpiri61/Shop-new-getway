@@ -19,6 +19,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('website.urls')),
@@ -26,8 +27,8 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('shop/', include('shop.urls')),
     path('cart/', include('cart.urls')),
-    # path('order/', include('order.urls')),
-    # path('payment/', include('payment.urls')),
+    path('order/', include('order.urls')),
+    path('payment/', include('payment.urls')),
     path('review/', include('review.urls')),
     
 ]
@@ -37,3 +38,13 @@ if settings.DEBUG:
                           document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL,
                           document_root=settings.MEDIA_ROOT)
+
+if settings.SHOW_DEBUGGER_TOOLBAR:
+    urlpatterns += [path('__debug__/', include('debug_toolbar.urls')),]
+
+
+
+handler400 = "core.error_views.error_400"  # bad_request
+handler403 = "core.error_views.error_403"  # permission_denied
+handler404 = "core.error_views.error_404"  # page_not_found
+handler500 = "core.error_views.error_500"  # server_error

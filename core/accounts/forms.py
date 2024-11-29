@@ -1,27 +1,20 @@
 from django.contrib.auth import forms as auth_forms
 from django.core.exceptions import ValidationError
-from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from .models import User
 
 
 class AuthenticationForm(auth_forms.AuthenticationForm):
-    
-    def confirm_login_allowed(self, user):
-        super(AuthenticationForm,self).confirm_login_allowed(user)
-        
-        # if not user.is_verified:
-        #     raise ValidationError("user is not verified")
-        
-        
-class SignUpForm(UserCreationForm):
-    
 
+    def confirm_login_allowed(self, user):
+        super(AuthenticationForm, self).confirm_login_allowed(user)
+
+
+class SignUpForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ('email', 'password1', 'password2')  
+        fields = ('email', 'password1', 'password2')
 
-    
     # For preventing duplicate emails
     def clean_email(self):
         email = self.cleaned_data.get('email')

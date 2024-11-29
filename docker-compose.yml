@@ -33,8 +33,6 @@ services:
     volumes: 
       - ./core:/usr/src/app
     working_dir: /usr/src/app
-
-    # command: django-admin startproject core .
     command: python manage.py runserver 0.0.0.0:8000
     ports:
       - '8000:8000'
@@ -67,14 +65,11 @@ services:
     ports:
       - '5000:80'
       - '25:25'
-      - '143:143'
+      
     volumes:
         - smtp4dev-data:/smtp4dev
     environment:
       - ServerOptions__HostName=smtp4dev
-
-
-
 
 
 

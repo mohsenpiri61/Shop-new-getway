@@ -4,9 +4,9 @@ from django.contrib.auth.base_user import BaseUserManager
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
-from django.core.validators import RegexValidator
 from accounts.validators import validate_iranian_cellphone_number
-
+import uuid
+from django.core.mail import send_mail
 
 class UserType(models.IntegerChoices):
     customer = 1, _("customer")
@@ -52,10 +52,12 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_("email address"), unique=True)
     is_staff = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=False)
     is_verified = models.BooleanField(default=False)
     type = models.IntegerField(
         choices=UserType.choices, default=UserType.customer.value)
+    failed_login_attempts = models.PositiveIntegerField(default=0)
+    last_failed_login = models.DateTimeField(null=True, blank=True)
 
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
@@ -73,7 +75,7 @@ class Profile(models.Model):
     user = models.OneToOneField('User', on_delete=models.CASCADE, related_name="user_profile")
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
-    phone_number = models.CharField(max_length=11, validators=[validate_iranian_cellphone_number])
+    phone_number = models.CharField(max_length=12, validators=[validate_iranian_cellphone_number])
     image = models.ImageField(upload_to="profile/", default="profile/default.png")
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
@@ -81,14 +83,14 @@ class Profile(models.Model):
     def get_fullname(self):
         if self.first_name or self.last_name:
             return self.first_name + " " + self.last_name
-        return "کاربر جدید"
+        return "کاربر ناشناس"
 
-from django.core.mail import send_mail
 
 @receiver(post_save, sender=User)
 def create_profile(sender, instance, created, **kwargs):
     if created:
-        Profile.objects.create(user=instance, pk=instance.pk) # pk=instance.pk lead to user's id be equal to profile's id
+        Profile.objects.create(user=instance, pk=instance.pk, first_name="کاربر جدید",
+                               last_name="کاربر جدید")  # pk=instance.pk lead to user's id be equal to profile's id
         send_mail(
             'خوش آمدید!',
             'خوش آمدید به سایت ما!',
@@ -96,3 +98,4 @@ def create_profile(sender, instance, created, **kwargs):
             [instance.email],
             fail_silently=False,
         )
+

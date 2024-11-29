@@ -1,15 +1,13 @@
-from django.urls import path, include
+from django.urls import path,include
 from . import views
-
 
 app_name = "accounts"
 
 urlpatterns = [
-    # path('',include('django.contrib.auth.urls'))
-    path('login/', views.LoginView.as_view(),name="login"),
-    path('logout/', views.LogoutView.as_view(),name="logout"),
-    # path('register/',views.RegisterView.as_view(),name="register"),
     
+    path('login/',views.LoginView.as_view(),name="login"),
+    path('logout/',views.LogoutView.as_view(),name="logout"),
+  
     # نمایش فرم وارد کردن ایمیل برای بازیابی رمز عبور
     path('reset_password/', views.CustomPasswordResetView.as_view(), name='password_reset'),
 
@@ -22,6 +20,7 @@ urlpatterns = [
     # پیام موفقیت پس از تغییر رمز عبور
     path('reset_password_complete/', views.CustomPasswordResetCompleteView.as_view(), name='password_reset_complete'),
     
-    path('signup/', views.SignUpView.as_view(), name='signup')
+    path('signup/', views.SignUpView.as_view(), name='signup'),
+    path('activate/<uidb64>/<token>/', views.ActivateAccountView.as_view(), name='activate'),
     
 ]
