@@ -11,22 +11,17 @@ class SepalPaymentGateway:
     _verify_url = "https://sepal.ir/api/sandbox/verify.json"
     _callback_url = "http://127.0.0.1:8000/"
     
-    def __init__(self, api_key):
-        self.api_key = api_key
 
-    def payment_request(self, amount, invoice_number="123", description="پرداخت سفارش", payer_name=None, payer_mobile=None, payer_email=None):
+    def payment_request(self, amount, invoice_number="123"):
         """
         ارسال درخواست پرداخت به سپال.
         """
         payload = {
-            "apiKey": self.api_key,
+            "apiKey": test,
             "amount": str(amount),
             "callbackUrl": self._callback_url,
             "invoiceNumber": invoice_number,
-            "payerName": payer_name,
-            "payerMobile": payer_mobile,
-            "payerEmail": payer_email,
-            "description": description,
+   
         }
         headers = {
             "Content-Type": "application/json"

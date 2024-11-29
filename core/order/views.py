@@ -71,18 +71,14 @@ class OrderCheckOutView(LoginRequiredMixin, HasCustomerAccessPermission, FormVie
     def _create_payment_url(self, order):
         """ایجاد لینک پرداخت سپال."""
         try:
-            payment_url = SepalPaymentGateway(api_key="test").payment_request(
+            payment_url = SepalPaymentGateway().payment_request(
                 amount=order.calculate_total_price(),
-                invoice_number=str(order.id),
-                description=f"پرداخت برای سفارش شماره {order.id}",
-                # payer_name=order.user.get_full_name(),
-                # payer_mobile=order.user.profile.mobile,
-                # payer_email=order.user.email
+                invoiceNumber=str(order.id),
+    
             )
             return payment_url
         except ValueError as e:
             # مدیریت خطا و هدایت به صفحه تسویه حساب
-            messages.error(self.request, str(e))
             return reverse("order:checkout")
 
     def form_invalid(self, form):
