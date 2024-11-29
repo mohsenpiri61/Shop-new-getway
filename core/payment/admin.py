@@ -8,9 +8,8 @@ from .models import PaymentModel
 class PaymentModelAdmin(admin.ModelAdmin):
     list_display = (
         "id",
-        "authority_id",
+        "payment_number",
         "amount",
-        "response_code",
         "status",
         "created_date"
     )

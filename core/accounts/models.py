@@ -91,11 +91,4 @@ def create_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance, pk=instance.pk, first_name="کاربر جدید",
                                last_name="کاربر جدید")  # pk=instance.pk lead to user's id be equal to profile's id
-        send_mail(
-            'خوش آمدید!',
-            'خوش آمدید به سایت ما!',
-            'admin@mysite.com',
-            [instance.email],
-            fail_silently=False,
-        )
 
