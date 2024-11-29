@@ -8,12 +8,12 @@ class CheckOutForm(forms.Form):
     
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)
-        super(CheckOutForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         
     def clean_address_id(self):
+        """ تضمین می کند که  آدرس به همان کاربری تعلق دارد که درخواست را ارسال کرده است (بررسی مالکیت)"""
         address_id = self.cleaned_data.get('address_id')
 
-        # Check if the address_id belongs to the requested user
         user = self.request.user  
         try:
             address = UserAddressModel.objects.get(id=address_id, user=user)
@@ -23,12 +23,12 @@ class CheckOutForm(forms.Form):
         return address
     
     def clean_coupon(self):
+        """ تضمین می‌کند که در لحظه پردازش نهایی داده‌ها، کد تخفیف هنوز معتبر است"""
         code = self.cleaned_data.get('coupon')
-        if code == "":
+        if code == "":   # or if not code :
             return None
         
         user = self.request.user  
-
         try:
             coupon = CouponModel.objects.get(code=code)
         except CouponModel.DoesNotExist:

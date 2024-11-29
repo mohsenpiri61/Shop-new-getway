@@ -9,7 +9,7 @@ class PaymentStatusType(models.IntegerChoices):
 
 # Create your models here.
 class PaymentModel(models.Model):
-    authority_id = models.CharField(max_length=255)
+    authority_id = models.CharField(max_length=255, null=True,blank=True)
     ref_id = models.BigIntegerField(null=True,blank=True)
     amount = models.DecimalField(default=0,max_digits=10,decimal_places=0)
     response_json = JSONField(default=dict)

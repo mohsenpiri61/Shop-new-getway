@@ -135,7 +135,6 @@
                             <h3 class="card-header-title">خلاصه هزینه</h3>
                         </div>
                         <form>
-
                             <div class="d-grid gap-3 mb-4">
                                 <dl class="row">
                                     <dt class="col-sm-6">مالیات</dt>
@@ -149,9 +148,16 @@
                                 </dl>
                                 <!-- End Row -->
                             </div>
-
+                              
                             <div class="d-grid">
-                                <a class="btn btn-primary btn-lg" href="{% url 'order:checkout' %}">ثبت سفارش</a>
+                                {% if cart_items|length > 0 %}
+                                    <a class="btn btn-primary btn-lg" href="{% url 'order:checkout' %}">ثبت سفارش</a>
+                                {% else %}  
+                                    <a class="btn btn-secondary btn-lg disabled" href="#" tabindex="-1" aria-disabled="true">
+                                        سبد خرید خالی است
+                                    </a>
+                                    <p class="text-danger mt-2">لطفاً ابتدا محصولی به سبد خرید اضافه کنید.</p>
+                                {% endif %}
                             </div>
                         </form>
                     </div>

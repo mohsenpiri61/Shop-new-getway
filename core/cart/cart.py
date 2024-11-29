@@ -60,16 +60,15 @@ class CartSession:
 
     def sync_cart_items_from_db(self, user):
         cart, created = CartModel.objects.get_or_create(user=user)
-        print(cart)
-        cart_items = CartItemModel.objects.filter(cart=cart)
+        cart_items_on_db = CartItemModel.objects.filter(cart=cart)
                 
-        for cart_item in cart_items:
-            for item in self._cart["items"]:
-                if str(cart_item.product.id) == item["product_id"]:
-                    cart_item.quantity = item["quantity"]
-                    cart_item.save()
-                    break
-            else:
+        for cart_item in cart_items_on_db:   # حلقه برای آیتم های دیتابیس
+            for item in self._cart["items"]:  # حلقه برای آیتم های session 
+                if str(cart_item.product.id) == item["product_id"]:  # تطابق آیتم دیتابیس و session
+                    cart_item.quantity = item["quantity"]  # به‌روزرسانی مقدار quantity
+                    cart_item.save()  # ذخیره تغییرات در دیتابیس
+                    break  # حلقه دوم متوقف می‌شود و به حلقه اول بازمی‌گردیم
+            else:  # When the second loop is completely finished and break is not executed, then else is executed.
                 new_item = {"product_id": str(cart_item.product.id), "quantity": cart_item.quantity}
                 self._cart["items"].append(new_item)
         self.merge_session_cart_in_db(user)
@@ -80,9 +79,9 @@ class CartSession:
 
         for item in self._cart["items"]:
             product_obj = ProductModel.objects.get(id=item["product_id"], status=ProductStatusType.publish.value)
-
             cart_item, created = CartItemModel.objects.get_or_create(cart=cart, product=product_obj)
             cart_item.quantity = item["quantity"]
             cart_item.save()
+            
         session_product_ids = [item["product_id"] for item in self._cart["items"]]
         CartItemModel.objects.filter(cart=cart).exclude(product__id__in=session_product_ids).delete()
