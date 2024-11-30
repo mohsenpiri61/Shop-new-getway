@@ -26,14 +26,16 @@ class SepalPaymentGateway:
         }
 
         response = requests.request("POST", self._request_url, headers=headers, data=json.dumps(payload))
+        print(response)
         response_dict = json.loads(response.text)
-        if "data" in response_dict and response_dict["data"]:
-            return response_dict["data"]["paymentNumber"]
+        print(response_dict["paymentNumber"])
+        if response_dict:
+            return response_dict["paymentNumber"]
         else:
             raise ValueError(f"Payment request failed: {response_dict['message']}")
 
 
-    def payment_verify(self, payment_number, invoice_number):
+    def payment_verify(self, payment_number, invoice_number="123"):
         payload = {
             "apiKey": "test",
             "paymentNumber": payment_number,
@@ -51,3 +53,22 @@ class SepalPaymentGateway:
         تولید لینک پرداخت.
         """
         return f"{self._payment_url}{payment_number}"
+    
+    
+    
+if __name__ == "__main__":
+    sepal = SepalPaymentGateway()
+
+    response = sepal.payment_request(15000)
+    # response_dict = json.loads(response.text)
+    # print(response_dict["paymentNumber"])
+
+    input("proceed to generating payment url?")
+
+    print(sepal.generate_payment_url(response))
+
+    input("check the payment?")
+
+    response = sepal.payment_verify(15000, response)
+    print(response)
+    
