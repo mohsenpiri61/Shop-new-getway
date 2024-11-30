@@ -87,8 +87,7 @@ class OrderCheckOutView(LoginRequiredMixin, HasCustomerAccessPermission, FormVie
             amount=order.get_price(),
             invoice_number=str(order.id),
         )
-        print(f"Final Payable Price applying coupon: {order.get_price()}/{order.total_price}")
-        print('lklkjlkj', pay_number)
+
         return sepal_obj.generate_payment_url(pay_number)
 
 

@@ -186,10 +186,9 @@ CELERY_BROKER_URL = "redis://redis_shop:6379/1"
 
 # payment gateway settings
 CSRF_TRUSTED_ORIGINS = [
-    'https://sepal.ir',
+    
     'https://sepal.ir/api/sandbox/verify.json',
     'https://sepal.ir/sandbox/payment/',
-    'https://b113-157-90-171-202.ngrok-free.app',
     'http://127.0.0.1:8000/',
 ]
 
