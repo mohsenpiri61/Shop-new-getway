@@ -73,7 +73,7 @@ class OrderCheckOutView(LoginRequiredMixin, HasCustomerAccessPermission, FormVie
         try:
             payment_url = SepalPaymentGateway().payment_request(
                 amount=order.calculate_total_price(),
-                invoiceNumber=str(order.id),
+                invoice_number=str(order.id),
     
             )
             return payment_url

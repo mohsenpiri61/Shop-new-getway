@@ -17,7 +17,7 @@ class SepalPaymentGateway:
         ارسال درخواست پرداخت به سپال.
         """
         payload = {
-            "apiKey": test,
+            "apiKey": "test",
             "amount": str(amount),
             "callbackUrl": self._callback_url,
             "invoiceNumber": invoice_number,
@@ -27,21 +27,20 @@ class SepalPaymentGateway:
             "Content-Type": "application/json"
         }
 
-        response = requests.post(self._request_url, headers=headers, json=payload, verify=False)
-        response_dict = response.json()
-        
-        if response_dict.get("status") == 1:
-            # پرداخت موفق ایجاد شده است
-            return response_dict["paymentNumber"]
+        response = requests.request("POST", self._request_url, headers=headers, data=json.dump(payload))
+        response_dict = json.loads(response.text)
+        if "data" in response_dict and response_dict["data"]:
+            return response_dict["data"]["paymentNumber"]
         else:
-            raise ValueError(f"خطا در ایجاد پرداخت: {response_dict.get('message', 'خطای ناشناخته')}")
+            raise ValueError(f"Payment request failed: {response_dict['errors']}")
+
 
     def payment_verify(self, payment_number, invoice_number):
         """
         بررسی وضعیت پرداخت.
         """
         payload = {
-            "apiKey": self.api_key,
+            "apiKey": "test",
             "paymentNumber": payment_number,
             "invoiceNumber": str(invoice_number),
         }
@@ -49,7 +48,7 @@ class SepalPaymentGateway:
             "Content-Type": "application/json"
         }
 
-        response = requests.post(self._verify_url, headers=headers, json=payload, verify=False)
+        response = requests.post(self._verify_url, headers=headers, data=json.dumps(payload))
         return response.json()
 
     def generate_payment_url(self, payment_number):
