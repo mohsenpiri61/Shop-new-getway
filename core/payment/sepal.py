@@ -13,9 +13,6 @@ class SepalPaymentGateway:
     
 
     def payment_request(self, amount, invoice_number="123"):
-        """
-        ارسال درخواست پرداخت به سپال.
-        """
         payload = {
             "apiKey": "test",
             "amount": str(amount),
@@ -36,9 +33,6 @@ class SepalPaymentGateway:
 
 
     def payment_verify(self, payment_number, invoice_number):
-        """
-        بررسی وضعیت پرداخت.
-        """
         payload = {
             "apiKey": "test",
             "paymentNumber": payment_number,
