@@ -10,7 +10,7 @@ class SepalPaymentGateway:
     _request_url = "https://sepal.ir/api/sandbox/request.json"
     _payment_url = "https://sepal.ir/sandbox/payment/"
     _verify_url = "https://sepal.ir/api/sandbox/verify.json"
-    _callback_url = "http://127.0.0.1:8000/"
+    _callback_url = "https://b113-157-90-171-202.ngrok-free.app/payment/view/"
     
 
     def payment_request(self, amount, invoice_number="123"):
