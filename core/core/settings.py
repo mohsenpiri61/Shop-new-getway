@@ -185,10 +185,12 @@ CELERY_BROKER_URL = "redis://redis_shop:6379/1"
 # CELERY_RESULT_BACKEND = 'redis://redis_shop:6379/1'
 
 # payment gateway settings
-MERCHANT_ID = config("MERCHANT_ID",default="4ced0a1e-4ad8-4309-9668-3ea3ae8e8897")
-SANDBOX_MODE = config("SANDBOX_MODE", cast=bool, default=True)
+CSRF_TRUSTED_ORIGINS = [
+    'https://sepal.ir',
+    'https://sepal.ir/api/sandbox/verify.json',
+    'https://sepal.ir/sandbox/payment/',
+    'https://b113-157-90-171-202.ngrok-free.app',
+    'http://127.0.0.1:8000/',
+]
 
-#Activation of new user account
-SITE_DOMAIN = "127.0.0.1:8000"  # دامنه و پورت مورد نظر
-SITE_PROTOCOL = "http"  # در صورت استفاده از HTTPS، آن را به "https" تغییر دهید 
-
+CSRF_COOKIE_SECURE = True

@@ -10,7 +10,7 @@ class SepalPaymentGateway:
     _request_url = "https://sepal.ir/api/sandbox/request.json"
     _payment_url = "https://sepal.ir/sandbox/payment/"
     _verify_url = "https://sepal.ir/api/sandbox/verify.json"
-    _callback_url = "https://b113-157-90-171-202.ngrok-free.app/payment/view/"
+    _callback_url = "https://b113-157-90-171-202.ngrok-free.app/payment/callback/"
     
 
     def payment_request(self, amount, invoice_number="123"):
@@ -27,8 +27,9 @@ class SepalPaymentGateway:
 
         response = requests.request("POST", self._request_url, headers=headers, data=json.dumps(payload))
         response_dict = json.loads(response.text)
-        if "data" in response_dict and response_dict["data"]:
-            return response_dict["data"]["paymentNumber"]
+        
+        if response_dict:
+            return response_dict["paymentNumber"]
         else:
             raise ValueError(f"Payment request failed: {response_dict['message']}")
 

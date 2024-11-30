@@ -1,14 +1,21 @@
-from django.views.generic import View
+from django.views.generic import (
+    TemplateView,
+    FormView,
+    View
+)
 from django.shortcuts import redirect
 from django.contrib import messages
 from django.urls import reverse, reverse_lazy
-from django.views.generic.edit import FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import CheckOutForm
-from cart.models import CartModel
-from .models import OrderModel, OrderItemModel, UserAddressModel
+from cart.models import CartModel, CartItemModel
+from cart.cart import CartSession 
+from .models import OrderModel, OrderItemModel, UserAddressModel, CouponModel
 from payment.sepal import SepalPaymentGateway
 from .permissions import HasCustomerAccessPermission
+from django.http import JsonResponse
+from django.utils import timezone
+from payment.models import PaymentModel
 
 
 class OrderCheckOutView(LoginRequiredMixin, HasCustomerAccessPermission, FormView):
@@ -36,7 +43,13 @@ class OrderCheckOutView(LoginRequiredMixin, HasCustomerAccessPermission, FormVie
         # افزودن آیتم‌های سفارش و پاک کردن سبد خرید
         self._create_order_items(order, cart)
         self._clear_cart(cart)
-
+        order.total_price = order.calculate_total_price()
+        
+        if coupon:
+            coupon.used_by.add(user)
+            coupon.save()
+        order.save()
+        
         # هدایت به درگاه پرداخت
         payment_url = self._create_payment_url(order)
         return redirect(payment_url)
@@ -64,8 +77,7 @@ class OrderCheckOutView(LoginRequiredMixin, HasCustomerAccessPermission, FormVie
 
     def _clear_cart(self, cart):
         """پاک کردن آیتم‌های سبد خرید و ریست کردن نشست سبد."""
-        cart.cart_items.all().delete()
-        from cart.cart import CartSession  # فرض بر این است که کلاس مدیریت سبد خرید در `utils` است
+        cart.cart_items.all().delete() 
         CartSession(self.request.session).clear()
 
     def _create_payment_url(self, order):
@@ -75,6 +87,8 @@ class OrderCheckOutView(LoginRequiredMixin, HasCustomerAccessPermission, FormVie
             amount=order.get_price(),
             invoice_number=str(order.id),
         )
+        print(f"Final Payable Price applying coupon: {order.get_price()}/{order.total_price}")
+        print('lklkjlkj', pay_number)
         return sepal_obj.generate_payment_url(pay_number)
 
 
@@ -94,6 +108,14 @@ class OrderCheckOutView(LoginRequiredMixin, HasCustomerAccessPermission, FormVie
             "total_tax": round((total_price * 9) / 100),
         })
         return context
+
+
+class OrderCompletedView(LoginRequiredMixin, HasCustomerAccessPermission, TemplateView):
+    template_name = "order/completed.html"
+
+    
+class OrderFailedView(LoginRequiredMixin, HasCustomerAccessPermission, TemplateView):
+    template_name = "order/failed.html"
 
 
 class ValidateCouponView(LoginRequiredMixin, HasCustomerAccessPermission, View):
