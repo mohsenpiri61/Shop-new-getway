@@ -184,7 +184,7 @@ PASSWORD_RESET_TIMEOUT = 172800  # 40 hours in seconds
 CELERY_BROKER_URL = "redis://redis_shop:6379/1"
 # CELERY_RESULT_BACKEND = 'redis://redis_shop:6379/1'
 
-# payment gateway settings
+# callback settings
 CSRF_TRUSTED_ORIGINS = [
     
     'https://sepal.ir/api/sandbox/verify.json',
